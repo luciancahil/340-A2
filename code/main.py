@@ -54,6 +54,10 @@ def q1():
     knn.fit(X, y)
     utils.plot_classifier(knn, X, y)
 
+"""
+python code/main.py 2
+
+"""
 @handle("2")
 def q2():
     dataset = load_dataset("ccdebt.pkl")
@@ -62,10 +66,107 @@ def q2():
     X_test = dataset["Xtest"]
     y_test = dataset["ytest"]
 
+    num_train = len(X)
+    num_val = int(num_train / 10)
+
     ks = list(range(1, 30, 4))
-    """YOUR CODE HERE FOR Q2"""
+    cv_accs = []
+    cv_train_accs = []
+    for k in ks:
+        print(k)
+        train_accs = []
+        val_accs = []
+
+        for i in range(10):
+            print(i)
+            val_mask = np.full(num_train, False)
+            val_mask[i * num_val: (i + 1) * num_val] = True
+            
+            cur_val_X = X[val_mask]
+            cur_val_y = y[val_mask]
+
+            cur_train_X = X[~val_mask]
+            cur_train_y = y[~val_mask]
+
+            knn = KNN(k)
+            knn.fit(cur_train_X, cur_train_y)
+
+            
+            train_predict = knn.predict(cur_train_X)
+            val_predict = knn.predict(cur_val_X)
+
+
+            train_acc = sum((train_predict==cur_train_y)/len(train_predict))
+            val_acc = sum((val_predict==cur_val_y)/len(val_predict))
+
+            train_accs.append(train_acc)
+            val_accs.append(val_acc)
+        
+        cv_accs.append(np.mean(val_accs))
+        cv_train_accs.append(np.mean(train_accs))
+
+    
+    breakpoint()
     raise NotImplementedError()
 
+
+# [0.6775000000000004, 0.7075000000000007, 0.7145000000000005, 0.7265000000000006, 0.7355000000000006, 0.7305000000000005, 0.7265000000000006, 0.7220000000000005]
+
+# [0.9999999999999684, 0.8053888888888657, 0.7806666666666445, 0.7729999999999783, 0.7718333333333116, 0.7652222222222008, 0.7603888888888677, 0.7563888888888679]
+
+@handle("2.1")
+def q21():
+    dataset = load_dataset("ccdebt.pkl")
+    X = dataset["X"]
+    y = dataset["y"]
+    X_test = dataset["Xtest"]
+    y_test = dataset["ytest"]
+    print("2.1")
+    cv_accs = [0.6775000000000004, 0.7075000000000007, 0.7145000000000005, 0.7265000000000006, 0.7355000000000006, 0.7305000000000005, 0.7265000000000006, 0.7220000000000005]
+    test_accs = []
+
+    ks = list(range(1, 30, 4))
+
+    for k in ks:
+        print(k)
+        knn = KNN(k)
+        knn.fit(X, y)
+        
+        test_predict = knn.predict(X_test)
+        test_acc = sum((test_predict==y_test)/len(test_predict))
+        test_accs.append(test_acc)
+
+
+    print(test_accs)
+
+    plt.scatter(ks, test_accs, label="Test Accuracy")
+    plt.scatter(ks, cv_accs, label="CV Accuracy")
+    plt.xlabel("K-Value")
+    plt.ylabel("Accuracy")
+    plt.title("KNN: CV vs. Test Accuracy")
+
+    plt.legend()
+    plt.savefig("../figs/Accuracy")
+
+
+
+
+@handle("2.2")
+def q22():
+    train_acc = [0.9999999999999684, 0.8053888888888657, 0.7806666666666445, 0.7729999999999783, 0.7718333333333116, 0.7652222222222008, 0.7603888888888677, 0.7563888888888679]
+    ks = list(range(1, 30, 4))
+
+
+    train_acc = [1-a for a in train_acc]
+
+
+    plt.scatter(ks, train_acc, label="Train Error")
+    plt.xlabel("K-Value")
+    plt.ylabel("Error Rate")
+    plt.title("KNN: Train Error")
+
+    plt.legend()
+    plt.savefig("../figs/Error")
 
 
 @handle("3.2")
