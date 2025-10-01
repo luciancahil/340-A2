@@ -32,6 +32,7 @@ class Kmeans:
                     y == kk
                 ):  # don't update the mean if no examples are assigned to it (one of several possible approaches)
                     means[kk] = X[y == kk].mean(axis=0)
+            print(self.error(X, y_old, means))
 
             changes = np.sum(y != y_old)
             # print('Running K-means, changes in cluster assignment = {}'.format(changes))
@@ -51,6 +52,9 @@ class Kmeans:
         return np.argmin(distance_matrix, axis=1)
 
     def error(self, X, y, means):
-        """YOUR CODE HERE FOR Q5.1"""
-        raise NotImplementedError()
+        distances = euclidean_dist_squared(X, means)
+        # turn a matrx into a list
+        distances = np.array([distance[int(y[i])] for i, distance in enumerate(distances)])
+
+        return np.sum(distances)
 

@@ -305,17 +305,33 @@ def q5():
 def q5_1():
     X = load_dataset("clusterData.pkl")["X"]
 
-    """YOUR CODE HERE FOR Q5.1. Also modify kmeans.py/Kmeans"""
-    raise NotImplementedError()
+    model = Kmeans(k=4)
+    model.fit(X)
+    y = model.predict(X)
+    error = (model.error(X, y, model.means))
 
+    plt.scatter(X[:, 0], X[:, 1], c=y, cmap="jet")
+
+    fname = Path("..", "figs", "kmeans_run_with_error_{}.png".format(error))
+    plt.savefig(fname)
+    print(f"Figure saved as {fname}")
 
 
 @handle("5.2")
 def q5_2():
     X = load_dataset("clusterData.pkl")["X"]
 
-    """YOUR CODE HERE FOR Q5.2"""
-    raise NotImplementedError()
+    for i in range(50):
+        model = Kmeans(k=4)
+        model.fit(X)
+        y = model.predict(X)
+        error = (model.error(X, y, model.means))
+
+        plt.scatter(X[:, 0], X[:, 1], c=y, cmap="jet")
+
+        fname = Path("..", "figs", "kmeans_run_with_error_{}.png".format(error))
+        plt.savefig(fname)
+        print(f"Figure saved as {fname}")
 
 
 
