@@ -21,6 +21,7 @@ from kmeans import Kmeans
 from knn import KNN
 from naive_bayes import NaiveBayes, NaiveBayesLaplace
 from random_tree import RandomForest, RandomTree
+import utils
 
 """
 python code/main.py 1
@@ -49,7 +50,9 @@ def q1():
         print("Train accuracty for k = {} is {}".format(k, train_acc))
         print("Test accuracy for k = {} is {}".format(k, test_acc))
 
-
+    knn = KNN(1)
+    knn.fit(X, y)
+    utils.plot_classifier(knn, X, y)
 
 @handle("2")
 def q2():

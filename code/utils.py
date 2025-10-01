@@ -60,6 +60,7 @@ def plot_classifier(model, X, y):
     plt.scatter(x1[y == 0], x2[y == 0], color="b", label="class 0")
     plt.scatter(x1[y == 1], x2[y == 1], color="r", label="class 1")
     plt.legend()
+    plt.savefig("../figs/Plot")
 
 
 def mode(y):
