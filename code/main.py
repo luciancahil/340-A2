@@ -279,9 +279,11 @@ def q4():
 
     print("Decision tree info gain")
     evaluate_model(DecisionTree(max_depth=np.inf, stump_class=DecisionStumpInfoGain))
+    print("Random Tree")
+    evaluate_model(RandomTree(max_depth=np.inf))
+    print("Random Forest")
+    evaluate_model(RandomForest(num_trees=50, max_depth=np.inf))
 
-    """YOUR CODE FOR Q4. Also modify random_tree.py/RandomForest"""
-    raise NotImplementedError()
 
 
 
