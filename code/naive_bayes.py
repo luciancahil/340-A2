@@ -93,7 +93,7 @@ class NaiveBayesLaplace(NaiveBayes):
 
                 correct_label = X[y==c]
                 correct_col = correct_label[:,j]
-                p_xy[j][c] = (sum(correct_col) + self.beta) / (len(correct_col) + d * self.beta)
+                p_xy[j][c] = (sum(correct_col) + self.beta) / (len(correct_col) + 2 * self.beta)
 
         print(p_xy[:,0])
 

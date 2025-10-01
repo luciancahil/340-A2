@@ -245,7 +245,7 @@ def q3_4():
 
 
 
-    model = NaiveBayesLaplace(num_classes=4, beta=1)
+    model = NaiveBayesLaplace(num_classes=4, beta=10000)
     model.fit(X, y)
 
     y_hat = model.predict(X)
