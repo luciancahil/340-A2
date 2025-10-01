@@ -181,6 +181,7 @@ def q3_2():
     wordlist = dataset["wordlist"]
 
     """YOUR CODE HERE FOR Q3.2"""
+    breakpoint()
     raise NotImplementedError()
 
 
@@ -231,8 +232,29 @@ def q3_4():
     model.fit(X, y)
 
     """YOUR CODE HERE FOR Q3.4. Also modify naive_bayes.py/NaiveBayesLaplace"""
-    raise NotImplementedError()
+    model = NaiveBayes(num_classes=4)
+    model.fit(X, y)
 
+    y_hat = model.predict(X)
+    err_train = np.mean(y_hat != y)
+    print(f"Naive Bayes training error: {err_train:.3f}")
+
+    y_hat = model.predict(X_valid)
+    err_valid = np.mean(y_hat != y_valid)
+    print(f"Naive Bayes validation error: {err_valid:.3f}")
+
+
+
+    model = NaiveBayesLaplace(num_classes=4, beta=1)
+    model.fit(X, y)
+
+    y_hat = model.predict(X)
+    err_train = np.mean(y_hat != y)
+    print(f"Laplace Bayes training error: {err_train:.3f}")
+
+    y_hat = model.predict(X_valid)
+    err_valid = np.mean(y_hat != y_valid)
+    print(f"Laplace Bayes validation error: {err_valid:.3f}")
 
 
 @handle("4")

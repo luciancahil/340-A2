@@ -29,12 +29,22 @@ class NaiveBayes:
         # Compute the conditional probabilities i.e.
         # p(x_ij=1 | y_i==c) as p_xy[j, c]
         # p(x_ij=0 | y_i==c) as 1 - p_xy[j, c]
-        p_xy = 0.5 * np.ones((d, k))
-        # TODO: replace the above line with the proper code
+        p_xy = np.ones((d, k))
+        for j in range(d):
+            # okay, let's break this down.
+            # The first element in this row. 
 
-        raise NotImplementedError()
+            # p(x_i0 = 1 | y_i == c) is stored in p_xy[0, c]
+            # That is, the odds that a row in X contains this word, if that row is classified as 0
+
+            for c in range(k):
+
+                correct_label = X[y==c]
+                correct_col = correct_label[:,j]
+                p_xy[j][c] = sum(correct_col) / len(correct_col)
 
 
+        print(p_xy[:,0])
         self.p_y = p_y
         self.p_xy = p_xy
 
@@ -65,9 +75,27 @@ class NaiveBayesLaplace(NaiveBayes):
         self.beta = beta
 
     def fit(self, X, y):
-        """YOUR CODE FOR Q3.4"""
-        raise NotImplementedError()
+        n, d = X.shape
 
+        # Compute the number of class labels
+        k = self.num_classes
+
+        # Compute the probability of each class i.e p(y==c), aka "baseline -ness"
+        counts = np.bincount(y)
+        p_y = counts / n
+
+        # Compute the conditional probabilities i.e.
+        # p(x_ij=1 | y_i==c) as p_xy[j, c]
+        # p(x_ij=0 | y_i==c) as 1 - p_xy[j, c]
+        p_xy = np.ones((d, k))
+        for j in range(d):
+            for c in range(k):
+
+                correct_label = X[y==c]
+                correct_col = correct_label[:,j]
+                p_xy[j][c] = (sum(correct_col) + self.beta) / (len(correct_col) + d * self.beta)
+
+        print(p_xy[:,0])
 
         self.p_y = p_y
         self.p_xy = p_xy
