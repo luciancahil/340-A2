@@ -34,13 +34,20 @@ def q1():
     X_test = dataset["Xtest"]
     y_test = dataset["ytest"]
 
-    knn = KNN(3)
-    knn.fit(X, y)
+    ks = [1, 3, 10]
 
-    knn.predict(X_test)
+    for k in ks:
+        knn = KNN(k)
+        knn.fit(X, y)
 
-    """YOUR CODE HERE FOR Q1. Also modify knn.py to implement KNN predict."""
-    raise NotImplementedError()
+        train_predict = knn.predict(X)
+        test_predict = knn.predict(X_test)
+
+        train_acc = sum((train_predict==y)/len(train_predict))
+        test_acc = sum((test_predict==y_test)/len(test_predict))
+
+        print("Train accuracty for k = {} is {}".format(k, train_acc))
+        print("Test accuracy for k = {} is {}".format(k, test_acc))
 
 
 
